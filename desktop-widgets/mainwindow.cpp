@@ -1718,6 +1718,10 @@ void MainWindow::on_actionFilterTags_triggered()
 void MainWindow::on_actionStats_triggered()
 {
 	setApplicationState(getAppState() == ApplicationState::Statistics ? ApplicationState::Default : ApplicationState::Statistics);
+	toggleCollapsible(true);
+	ui.topSplitter->setSizes({ EXPANDED, EXPANDED });
+	ui.mainSplitter->setSizes({ EXPANDED, EXPANDED });
+	ui.bottomSplitter->setSizes({ EXPANDED, COLLAPSED });
 }
 
 void MainWindow::showFilterIfEnabled()
@@ -1769,6 +1773,11 @@ void MainWindow::setApplicationState(ApplicationState state)
 	setQuadrant(quadrants.topRight, ui.topRight);
 	setQuadrant(quadrants.bottomLeft, ui.bottomLeft);
 	setQuadrant(quadrants.bottomRight, ui.bottomRight);
+
+	// The statistics view does its own thing with respect to visibility
+	// of quadrants. So in case we leave that state, change to the
+	// original visibility of the quadrants.
+	enterState(this->state);
 }
 
 void MainWindow::showProgressBar()
